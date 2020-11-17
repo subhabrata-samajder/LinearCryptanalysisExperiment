@@ -1,8 +1,10 @@
 # LinearCryptanalysisExperiment
 
-************************************************
-*Authors: Subhabrata Samajder and Palash Sarkar*
-************************************************
+*********
+*Authors*
+*********
+Subhabrata Samajder, Indraprastha Institute of Information Technology, Delhi, India 
+Palash Sarkar, Indian Statistical Institute, Kolkata, India
 
 
 **********************
