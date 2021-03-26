@@ -14,9 +14,6 @@ Palash Sarkar, Indian Statistical Institute, Kolkata, India
 The code here presents an implementation of a linear cryptanalysis experiment on the scaled version of Present called Small Present (see https://eprint.iacr.org/2010/143). It randomly selects an n-bit input mask and an n-bit output mask for the input to the second last round of the Small Present cipher. The output mask determines the number of subkey bits m, i.e., the number of key bits that needs to be guessed in the key recovery attack using linear cryptanalysis. The output mask is selected in such a way that m <= 32. A 80-bit key K is then randomly selected and the key scheduling algorithm for Small Present is applied to it to generate the rounds keys. For the purpose of our experiment we take the number of rounds to be 10. A wrong key guess is made for the m subkey bits of the last rounds. The setup phase of the experiment ends here. 
 
 After the setup phase, N plaintexts are randomly generated and their corresponding ciphertexts are obtained by encryption under Small Present using the key K. For each plaintext-ciphertext pair, the ciphertext is inverted over the last and the last but one rounds using the wrong key guess and the linear approximation is evaluated. The experiment counts the number of ones out of these N plaintext-ciphertext pairs, which is a number between 0 to N. This corresponds to one observation of the experiment. We independently repeat the experiment S times to generate S such observations. From these S observations, the empirical distribution, i.e., the number of times the value i (lying between 0 to N) occurs out of S iterations divided by S, is computed and these are plotted in a graph.
-
-
-
 *************************  
 *Contents of this folder*
 *************************
