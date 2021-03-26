@@ -15,7 +15,6 @@ The code here presents an implementation of a linear cryptanalysis experiment on
 
 After the setup phase, N plaintexts are randomly generated and their corresponding ciphertexts are obtained by encryption under Small Present using the key K. For each plaintext-ciphertext pair, the ciphertext is inverted over the last and the last but one rounds using the wrong key guess and the linear approximation is evaluated. The experiment counts the number of ones out of these N plaintext-ciphertext pairs, which is a number between 0 to N. This corresponds to one observation of the experiment. We independently repeat the experiment S times to generate S such observations. From these S observations, the empirical distribution, i.e., the number of times the value i (lying between 0 to N) occurs out of S iterations divided by S, is computed and these are plotted in a graph.
 
-
 *************************  
 *Contents of this folder*
 *************************
