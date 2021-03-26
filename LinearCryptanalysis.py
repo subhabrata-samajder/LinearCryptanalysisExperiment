@@ -1,5 +1,7 @@
 import aes
 
+import RC4 as rc4
+
 import SmallPresent as SP
 
 import numpy as np
@@ -136,35 +138,56 @@ def KeyGuess(m, r, RoundKeys, SubKeyNibblesR):
 
     return KeyGuessR, KeyGuessR1
 
-def LinearCryptanalysis(n, r, KeyLen, RoundKeys, InputMask, OutputMask, m, SubKeyNibblesR, N, KeyGuessR, KeyGuessR1):
+def LinearCryptanalysis(PlaintextSampleChoice, n, r, KeyLen, RoundKeys, InputMask, OutputMask, m, SubKeyNibblesR, N, KeyGuessR, KeyGuessR1):
     # Calculating the inverse S-box
     Sbox = [12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2]
     SboxInv = [Sbox.index(x) for x in range(16)]
 
-    # Initilizing the key and iv (ctr) of AES in CTR mode
-    key = os.urandom(16)
-    iv = os.urandom(16)
+    if(4*n % 8 != 0): 
+        Rem = 1 
+    else:
+        Rem = 0
+
+    if (PlaintextSampleChoice == 1):                                                                                     # Use AES in CTR Mode
+        # Initilizing the key and iv (ctr) of AES in CTR mode
+        key = os.urandom(16)
+        iv = os.urandom(16)
+    elif (PlaintextSampleChoice == 2):                                                                                   # Use RC4
+        RC4KeyLen = 40
+        RC4Key = rc4.SelectKey(RC4KeyLen)
+
+        State = rc4.KSA(RC4Key, RC4KeyLen)
+
+        Iter1 = 0
+        Iter2 = 0
+
 
     # Calculaing the number of times the linear approximation is equal to 1 out of N plaintext-ciphertext pairs
     Count = 0
     Zero = 0
     for i in range(N):
         # Randomly generating a plaintext
-        # Sampling using randint
-#        Plaintext = int(np.random.randint(0, (1 << (4*n)), size = 1)[0])
+        if (PlaintextSampleChoice == 1):
+            # Sampling using AES in CTR mode
+            Plaintext = aes.AES(key).encrypt_ctr(Zero.to_bytes(int((4*n)/8) + Rem, "big"), iv)
+            Plaintext = int.from_bytes(Plaintext, "big")
+            Plaintext = (Plaintext >> ((8*(int((4*n)/8) + Rem)) - (4*n)))
 
-        # Sampling using os.urandom
-#        Plaintext = (int.from_bytes(os.urandom(int((4*n)/8) + 1), "big"))
-#        Plaintext = (Plaintext >> ((4*n) - (8*(int((4*n)/8)))))
-        
-        # Sampling using AES in CTR mode
-        Plaintext = aes.AES(key).encrypt_ctr(Zero.to_bytes(int((4*n)/8) + 1, "big"), iv)
-        Plaintext = int.from_bytes(Plaintext, "big")
-        Plaintext = (Plaintext >> ((4*n) - (8*int((4*n)/8))))
+            # Incrementing the ctr by 1
+            iv = int.from_bytes(iv, "big") + 1
+            iv = iv.to_bytes(16, "big")
+        elif (PlaintextSampleChoice == 2):
+            for j in range(int((4*n)/8) + Rem):
+                Plaintext1, State, Iter1, Iter2 = rc4.PRGA_OneByte(State, Iter1, Iter2)
 
-        # Incrementing the ctr by 1
-        iv = int.from_bytes(iv, "big") + 1
-        iv = iv.to_bytes(16, "big")
+                if (j == (int((4*n)/8) + Rem - 1)):
+                    Plaintext1 = (Plaintext1 >> ((8*(int((4*n)/8) + Rem)) - 4*n))
+
+                    Plaintext = int("%s%s" %(hex(Plaintext), hex(Plaintext1)[2:]), 16)
+                elif (j != 0):
+                    Plaintext = int("%s%s" %(hex(Plaintext), hex(Plaintext1)[2:]), 16)
+                elif (j == 0):
+                    Plaintext = Plaintext1
 
         # Evaluation of Plaintext Mask
         XOR = 0

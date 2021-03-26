@@ -176,7 +176,10 @@ def main(argv):
                 Sample[i - (int(N/2) - ThreeSigma)] = RawSample[i]
 
         # Plotting the empirical distribution
-        XRange = [i/N for i in range(int(N/2) - ThreeSigma + 1, int(N/2) + ThreeSigma + 1)]
+#        XRange = [i/N for i in range(int(N/2) - ThreeSigma + 1, int(N/2) + ThreeSigma + 1)]
+        XRange = [i for i in range(int(N/2) - ThreeSigma + 1, int(N/2) + ThreeSigma + 1)]
+#        for i in range(1, len(Sample) - 1):
+#            Sample[i] = Sample[i]/S
         YRange = Sample[1:len(Sample) - 1]
 
         plot.plot(XRange, YRange, color='green', marker='o', markerfacecolor='green', markersize=3, label='Empirical Distribution')
@@ -193,11 +196,14 @@ def main(argv):
         Sigma1 = mp.sqrt(Var1)
 
         # Labeling the x and y axes
-        plot.xlabel('x')
-        plot.ylabel('Probability')
+        plot.xlabel('x', size = 20)
+        plot.ylabel('Count', size = 20)
+
+        plot.rc('xtick', labelsize=20)
+        plot.rc('ytick', labelsize=20) 
 
         # Giving a title to plotted graph
-        plot.title('Plot of empirical data where n = %s, N = %s, S = %s, m = %s, Rounds = %s, Key Length = %s,\nCorrect Key = %s, Plaintext Mask = %s, Output Mask = %s,\nLast Round Key Guess = %s, Last But One Round Key Guess = %s,\nMean = %s, Variance = %s' %(n, N, S, m, Rounds, KeyLen, hex(Key), hex(InputMask), hex(OutputMask), hex(KeyGuessR1), hex(KeyGuessR), SampleMean, SampleVar))
+        plot.title('Plot of empirical data where n = %s, N = %s, S = %s, m = %s, Rounds = %s, Key Length = %s,\nCorrect Key = %s, Plaintext Mask = %s, Output Mask = %s,\nLast Round Key Guess = %s, Last But One Round Key Guess = %s,\nMean = %s, Variance = %s' %(n, N, S, m, Rounds, KeyLen, hex(Key), hex(InputMask), hex(OutputMask), hex(KeyGuessR1), hex(KeyGuessR), SampleMean, SampleVar), size = 20)
     
         # To save the graph plot in a file. First Checks whether the directory n%s exists or not. If not then it creates a directories n%s. Then checks 
         # if the file named n%sN%sS%s.pdf exists or not. If yes then goes on checking for i for  which the file n%sN%sS%s_i.pdf does not exits. It then 

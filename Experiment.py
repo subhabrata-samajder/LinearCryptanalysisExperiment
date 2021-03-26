@@ -27,15 +27,20 @@ def main(argv):
     mp.dps = 100
    
     try:
-        opts, args = getopt.getopt(argv[1:],"hi:",["--help", "--input"])
+        opts, args = getopt.getopt(argv[1:],"hs:i:",["--help", "--sampling", "--input"])
     except getopt.GetoptError:
-        print('Error: %s -i <Value of n> <Value of N> <Value of S>' %argv[0])
+        print('Error: %s -s <Sampling Choice> -i <Value of n> <Value of N> <Value of S>' %argv[0])
         sys.exit(2)
     
     for opt, arg in opts:
         if opt in ('-h', "--help"):
-            print('Usage: %s -i <Value of n> <Value of N> <Value of S>' %argv[0])
+            print('Usage: %s -s <Sampling Choice> -i <Value of n> <Value of N> <Value of S>' %argv[0])
             sys.exit()
+        elif opt in ("-s", "--sampling"):
+            PlaintextSampleChoice = int(arg)
+            if (PlaintextSampleChoice < 1) or (PlaintextSampleChoice > 2):
+                print("ERROR: PlaintextSampleChoice can take value 1 and 2!\n1: Sample plaintexts using AES in CTR mode\n2: Sample plaintexts using RC4")
+                sys.exit(2)
         elif opt in ("-i", "--input"):
             n = int(arg)
             if (n <= 5):
@@ -49,7 +54,7 @@ def main(argv):
     Count = 0
     for arg in args:
         if (arg == ''):
-            print('Values of N and S are missing!\nUsage: %s -s <Sigma Option> <Value of n> <Value of N> <Value of S>' %argv[0])
+            print('Values of N and S are missing!\nUsage: %s -s <Sampling Choice> -i <Value of n> <Value of N> <Value of S>' %argv[0])
             sys.exit(2)
         elif (Count == 0):
             N = int(arg)
@@ -102,7 +107,7 @@ def main(argv):
 
     RawSample = [0 for i in range(N + 1)]
     for i in range(S):
-        Count = LC.LinearCryptanalysis(Nibbles, Rounds, KeyLen, RoundKeys, InputMask, OutputMask, m, SubKeyNibblesR, N, KeyGuessR, KeyGuessR1)
+        Count = LC.LinearCryptanalysis(PlaintextSampleChoice, Nibbles, Rounds, KeyLen, RoundKeys, InputMask, OutputMask, m, SubKeyNibblesR, N, KeyGuessR, KeyGuessR1)
         
         RawSample[Count] += 1
 
