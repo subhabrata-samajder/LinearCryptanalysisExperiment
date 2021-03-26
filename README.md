@@ -43,7 +43,7 @@ After the setup phase, N plaintexts are randomly generated and their correspondi
 ***********************************
 1. TestSmallPresent.py: python3 TestSmallPresent.py
 
-2. Experiment.py: python3 Experiment.py -i n N S
+2. Experiment.py: python3 Experiment.py -s SampleChoice -i n N S, where the first argument denotes the choice of sampling strategy to be used to sample random plaintexts with replacement. If SampleChoice is 1, then the experiment uses AES in CTR mode, else if the choice 2, then the sampling of plaintexts is done using RC4.
 
 3. Plot.py: python3 Plot.py -i n N S CounterLow CounterUpp, where CounterLow and CounterHigh denote the range (both inclusive) of files which one wants to reconstruct. That is it reconstructs the data files from n%s-N%s-S%s_CounterLow.txt to n%s-N%s-S%s_CounterHigh.txt, where CounterLow = 0 implies the file named n%s-N%s-S%s.txt.
 
