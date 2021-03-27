@@ -53,10 +53,6 @@ def TestRC4():
     OutputLen = 10
     OutputStream = [int("0xEB", 16), int("0x9F", 16), int("0x77", 16), int("0x81", 16), int("0xB7", 16), int("0x34", 16), int("0xCA", 16), int("0x72", 16), int("0xA7", 16), int("0x19", 16)]
 
-#    for i in range(KeyLen):
-#        print("%s" %Key[i], end=", ")
-#    print("")
-
     S = KSA(Key, KeyLen)
 
     S, Output = PRGA(S, OutputLen)
@@ -80,10 +76,6 @@ def TestRC4():
     OutputLen = 6
     OutputStream = [int("0x60", 16), int("0x44", 16), int("0xDB", 16), int("0x6D", 16), int("0x41", 16), int("0xB7", 16)]
 
-#    for i in range(KeyLen):
-#        print("%s" %Key[i], end=", ")
-#    print("")
-
     S = KSA(Key, KeyLen)
 
     S, Output = PRGA(S, OutputLen)
@@ -106,10 +98,6 @@ def TestRC4():
     Key = [ord('S'), ord('e'), ord('c'), ord('r'), ord('e'), ord('t')]
     OutputLen = 8
     OutputStream = [int("0x04", 16), int("0xD4", 16), int("0x6B", 16), int("0x05", 16), int("0x3C", 16), int("0xA8", 16), int("0x7B", 16), int("0x59", 16)]
-
-#    for i in range(KeyLen):
-#        print("%s" %Key[i], end=", ")
-#    print("")
 
     S = KSA(Key, KeyLen)
 
@@ -171,18 +159,6 @@ def main(argv):
 
 
             print("%s" %hex(Plaintext))
-
-
-#        Plaintext1, State, Iter1, Iter2 = PRGA_OneByte(State, Iter1, Iter2)
-#        Plaintext2, State, Iter1, Iter2 = PRGA_OneByte(State, Iter1, Iter2)
-#
-#        print("%s" %hex(Plaintext1), end="\t")
-#        print("%s" %hex(Plaintext2), end="\t")
-#        Plaintext2 = (Plaintext2 >> (8 - (4*n - 8)))
-#        print("%s%s" %(hex(Plaintext2), hex(Plaintext1)[2:]), end="\t")
-#
-#        Plaintext = int("%s%s" %(hex(Plaintext2), hex(Plaintext1)[2:]), 16)
-#        print("%s" %Plaintext)
 
 if __name__ == "__main__":
     main(sys.argv[0:])
